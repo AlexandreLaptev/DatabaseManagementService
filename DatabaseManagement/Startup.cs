@@ -53,14 +53,11 @@ namespace DatabaseManagement
                 // Create the bus using RabbitMQ bus
                 var rabbitMQBus = Bus.Factory.CreateUsingRabbitMq(busFactoryConfig =>
                 {
-                    string databaseUpdateTopic = "database-update";
                     var virtualHost = (!string.IsNullOrEmpty(rabbitMQConfig.VirtualHost)) ? rabbitMQConfig.VirtualHost : "/";
 
-                    // Specify the message ProgressMessage to be sent to a specific topic
-                    busFactoryConfig.Message<ProgressMessage>(configTopology =>
-                        {
-                            configTopology.SetEntityName(databaseUpdateTopic);
-                        });
+                    // Specify the messages to be sent to a specific topics (exchanges)
+                    busFactoryConfig.Message<ProgressMessage>(configTopology => configTopology.SetEntityName("progress.message"));
+                    busFactoryConfig.Message<DatabaseUpdated>(configTopology => configTopology.SetEntityName("database.updated"));
 
                     var host = busFactoryConfig.Host(rabbitMQConfig.Host, virtualHost, h =>
                     {

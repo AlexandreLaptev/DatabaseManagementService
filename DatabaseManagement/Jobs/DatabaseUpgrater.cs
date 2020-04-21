@@ -77,6 +77,7 @@ namespace DatabaseManagement
                     // Message of completion
                     _logger.LogInformation("Database upgrade is completed.");
                     await _publishEndpoint.Publish<ProgressMessage>(new { Message = "Database upgrade is completed", Status = ProgressStatus.Completed, Timestamp = DateTime.Now });
+                    await _publishEndpoint.Publish<DatabaseUpdated>(new {});
                 }
                 else
                 {
