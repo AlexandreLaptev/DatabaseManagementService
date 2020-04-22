@@ -15,7 +15,7 @@ namespace DatabaseManagement
         public static async Task BackupDB(string databaseName, string backupFilePath, IConfiguration configuration, IPublishEndpoint publishEndpoint, ILogger<DatabaseUpgrater> logger)
         {
             logger.LogInformation("Backup database operation started...");
-            await publishEndpoint.Publish<ProgressMessage>(new { Message = "Backup database operation started", Status = ProgressStatus.Processing, Timestamp = DateTime.Now });
+            await publishEndpoint.Publish<UpdateProgress>(new { Message = "Backup database operation started", Status = ProgressStatus.Processing, Timestamp = DateTime.Now });
 
             ServerConnection connection = null;
 
@@ -61,7 +61,7 @@ namespace DatabaseManagement
                 {
                     // Inform the user percent complete
                     logger.LogInformation($"Percent Backup: {e.Percent}");
-                    await publishEndpoint.Publish<ProgressMessage>(new { Message = $"Percent Backup: {e.Percent}", Status = ProgressStatus.Processing, Timestamp = DateTime.Now });
+                    await publishEndpoint.Publish<UpdateProgress>(new { Message = $"Percent Backup: {e.Percent}", Status = ProgressStatus.Processing, Timestamp = DateTime.Now });
                 };
 
                 // Run SqlBackup to perform the full database backup on the instance of SQL Server
@@ -69,7 +69,7 @@ namespace DatabaseManagement
 
                 // Inform the user that the backup has been completed 
                 logger.LogInformation("Backup database has been completed");
-                await publishEndpoint.Publish<ProgressMessage>(new { Message = "Backup database has been completed", Status = ProgressStatus.Processing, Timestamp = DateTime.Now });
+                await publishEndpoint.Publish<UpdateProgress>(new { Message = "Backup database has been completed", Status = ProgressStatus.Processing, Timestamp = DateTime.Now });
             }
             finally
             {
@@ -81,7 +81,7 @@ namespace DatabaseManagement
         public static async Task RestoreDB(string databaseName, string backupFilePath, IConfiguration configuration, IPublishEndpoint publishEndpoint, ILogger<DatabaseUpgrater> logger)
         {
             logger.LogInformation("Restore database operation started...");
-            await publishEndpoint.Publish<ProgressMessage>(new { Message = "Restore database operation started", Status = ProgressStatus.Processing, Timestamp = DateTime.Now });
+            await publishEndpoint.Publish<UpdateProgress>(new { Message = "Restore database operation started", Status = ProgressStatus.Processing, Timestamp = DateTime.Now });
 
             ServerConnection connection = null;
 
@@ -116,7 +116,7 @@ namespace DatabaseManagement
                 {
                     // Inform the user percent restore
                     logger.LogInformation($"Percent Restore: {e.Percent}");
-                    await publishEndpoint.Publish<ProgressMessage>(new { Message = $"Percent Restore: {e.Percent}", Status = ProgressStatus.Processing, Timestamp = DateTime.Now });
+                    await publishEndpoint.Publish<UpdateProgress>(new { Message = $"Percent Restore: {e.Percent}", Status = ProgressStatus.Processing, Timestamp = DateTime.Now });
                 };
 
                 // Restore the full database backup with recovery         
@@ -129,7 +129,7 @@ namespace DatabaseManagement
 
                 // Inform the user that the restore has been completed
                 logger.LogInformation("Restore database has been completed");
-                await publishEndpoint.Publish<ProgressMessage>(new {  Message = "Restore database has been completed", Status = ProgressStatus.Processing, Timestamp = DateTime.Now });
+                await publishEndpoint.Publish<UpdateProgress>(new {  Message = "Restore database has been completed", Status = ProgressStatus.Processing, Timestamp = DateTime.Now });
             }
             finally
             {

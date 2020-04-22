@@ -26,7 +26,7 @@ namespace DatabaseManagement
             if (Directory.GetFiles(scriptsPath, "*.sql", SearchOption.TopDirectoryOnly).Length > 0)
             {
                 logger.LogInformation("Performing schema upgrade started...");
-                await publishEndpoint.Publish<ProgressMessage>(new { Message = "Performing schema upgrade started", Status = ProgressStatus.Processing, Timestamp = DateTime.Now });
+                await publishEndpoint.Publish<UpdateProgress>(new { Message = "Performing schema upgrade started", Status = ProgressStatus.Processing, Timestamp = DateTime.Now });
 
                 var connectionString = configuration["NorthwindConnection"];
 
@@ -51,7 +51,7 @@ namespace DatabaseManagement
                     if (upgradeResult.Successful)
                     {
                         logger.LogInformation("Database schema upgraded successfully.");
-                        await publishEndpoint.Publish<ProgressMessage>(new { Message = "Database schema upgraded successfully", Status = ProgressStatus.Processing, Timestamp = DateTime.Now });
+                        await publishEndpoint.Publish<UpdateProgress>(new { Message = "Database schema upgraded successfully", Status = ProgressStatus.Processing, Timestamp = DateTime.Now });
                     }
                     else
                     {
@@ -63,7 +63,7 @@ namespace DatabaseManagement
                 else
                 {
                     logger.LogInformation("Schema upgrade is not required.");
-                    await publishEndpoint.Publish<ProgressMessage>(new { Message = "Schema upgrade is not required", Status = ProgressStatus.Processing, Timestamp = DateTime.Now });
+                    await publishEndpoint.Publish<UpdateProgress>(new { Message = "Schema upgrade is not required", Status = ProgressStatus.Processing, Timestamp = DateTime.Now });
                 }
             }
         }
@@ -75,7 +75,7 @@ namespace DatabaseManagement
             if (Directory.GetFiles(scriptsPath, "*.sql", SearchOption.TopDirectoryOnly).Length > 0)
             {
                 logger.LogInformation("Performing data upgrade started...");
-                await publishEndpoint.Publish<ProgressMessage>(new { Message = "Performing data upgrade started", Status = ProgressStatus.Processing, Timestamp = DateTime.Now });
+                await publishEndpoint.Publish<UpdateProgress>(new { Message = "Performing data upgrade started", Status = ProgressStatus.Processing, Timestamp = DateTime.Now });
 
                 var connectionString = configuration["NorthwindConnection"];
 
@@ -100,7 +100,7 @@ namespace DatabaseManagement
                     if (upgradeResult.Successful)
                     {
                         logger.LogInformation("Database data upgraded successfully.");
-                        await publishEndpoint.Publish<ProgressMessage>(new { Message = "Database data upgraded successfully", Status = ProgressStatus.Processing, Timestamp = DateTime.Now });
+                        await publishEndpoint.Publish<UpdateProgress>(new { Message = "Database data upgraded successfully", Status = ProgressStatus.Processing, Timestamp = DateTime.Now });
                     }
                     else
                     {
@@ -112,7 +112,7 @@ namespace DatabaseManagement
                 else
                 {
                     logger.LogInformation("Data update is not required.");
-                    await publishEndpoint.Publish<ProgressMessage>(new { Message = "Data update is not required", Status = ProgressStatus.Processing, Timestamp = DateTime.Now });
+                    await publishEndpoint.Publish<UpdateProgress>(new { Message = "Data update is not required", Status = ProgressStatus.Processing, Timestamp = DateTime.Now });
                 }
             }
         }

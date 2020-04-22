@@ -76,19 +76,19 @@ namespace DatabaseManagement
 
                     // Message of completion
                     _logger.LogInformation("Database upgrade is completed.");
-                    await _publishEndpoint.Publish<ProgressMessage>(new { Message = "Database upgrade is completed", Status = ProgressStatus.Completed, Timestamp = DateTime.Now });
-                    await _publishEndpoint.Publish<DatabaseUpdated>(new {});
+                    await _publishEndpoint.Publish<UpdateProgress>(new { Message = "Database upgrade is completed", Status = ProgressStatus.Completed, Timestamp = DateTime.Now });
+                    await _publishEndpoint.Publish<UpdateCompleted>(new {});
                 }
                 else
                 {
                     _logger.LogInformation("Upgrade is not required.");
-                    await _publishEndpoint.Publish<ProgressMessage>(new { Message = "Upgrade is not required", Status = ProgressStatus.NotRequired, Timestamp = DateTime.Now });
+                    await _publishEndpoint.Publish<UpdateProgress>(new { Message = "Upgrade is not required", Status = ProgressStatus.NotRequired, Timestamp = DateTime.Now });
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                await _publishEndpoint.Publish<ProgressMessage>(new { ex.Message, Status = ProgressStatus.Error, Timestamp = DateTime.Now });
+                await _publishEndpoint.Publish<UpdateProgress>(new { ex.Message, Status = ProgressStatus.Error, Timestamp = DateTime.Now });
 
                 if (!_cancellationToken.IsCancellationRequested)
                 {

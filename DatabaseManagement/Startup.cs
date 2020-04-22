@@ -56,8 +56,8 @@ namespace DatabaseManagement
                     var virtualHost = (!string.IsNullOrEmpty(rabbitMQConfig.VirtualHost)) ? rabbitMQConfig.VirtualHost : "/";
 
                     // Specify the messages to be sent to a specific topics (exchanges)
-                    busFactoryConfig.Message<ProgressMessage>(configTopology => configTopology.SetEntityName("progress.message"));
-                    busFactoryConfig.Message<DatabaseUpdated>(configTopology => configTopology.SetEntityName("database.updated"));
+                    busFactoryConfig.Message<UpdateProgress>(configTopology => configTopology.SetEntityName("database.updates.progress"));
+                    busFactoryConfig.Message<UpdateCompleted>(configTopology => configTopology.SetEntityName("database.updates.completed"));
 
                     var host = busFactoryConfig.Host(rabbitMQConfig.Host, virtualHost, h =>
                     {
